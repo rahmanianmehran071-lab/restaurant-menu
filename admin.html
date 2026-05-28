@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>شب‌نشین | پنل مدیریت</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#C9A84C;--gold-l:#E8C97A;--gold-d:#8B6914;--gold-p:#F5E6C0;
+  --bg:#0A0906;--bg-c:#161410;--bg-s:#100E0A;--bg-h:#1E1A12;
+  --tx:#F2E8D0;--tm:#9A8B6E;--tg:#E8C97A;
+  --bc-g:rgba(201,168,76,.3);--bc-c:rgba(201,168,76,.15);
+  --gfg:#6BCF8A;--gbg:rgba(26,74,42,.5);--gbd:rgba(107,207,138,.25);
+  --rfg:#F08080;--rbg:rgba(80,30,30,.5);--rbd:rgba(240,128,128,.25);
+}
+html,body{height:100%;overflow:hidden;font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--tx);direction:rtl}
+
+/* ── LAYOUT ── */
+.shell{display:flex;height:100vh}
+.sidebar{width:252px;flex-shrink:0;background:var(--bg-c);border-left:1px solid var(--bc-g);display:flex;flex-direction:column}
+.workspace{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+
+/* ── SIDEBAR ── */
+.brand{padding:24px 20px;border-bottom:1px solid var(--bc-g);display:flex;align-items:center;gap:12px}
+.brand-icon{font-size:26px}
+.brand-name{font-size:18px;font-weight:700;color:var(--gold-l);letter-spacing:1px}
+.brand-role{font-size:10px;color:var(--tm);letter-spacing:2px;display:block;margin-top:2px}
+.nav{flex:1;overflow-y:auto;padding:14px 10px}
+.nav-group{font-size:10px;color:var(--tm);letter-spacing:2px;padding:10px 12px 5px;margin-top:6px}
+.nav-item{
+  display:flex;align-items:center;gap:10px;width:100%;
+  padding:10px 13px;border:1px solid transparent;background:transparent;
+  color:var(--tm);cursor:pointer;border-radius:9px;
+  font-family:'Vazirmatn',sans-serif;font-size:13px;
+  transition:all .2s;text-align:right;margin-bottom:2px;
+}
+.nav-item i{font-size:16px;flex-shrink:0}
+.nav-item:hover{background:rgba(201,168,76,.07);color:var(--tg)}
+.nav-item.on{background:rgba(201,168,76,.14);color:var(--gold-l);border-color:var(--bc-g)}
+.nav-badge{margin-right:auto;background:var(--gold-d);color:var(--gold-p);font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600}
+.sidebar-footer{padding:16px;border-top:1px solid var(--bc-g)}
+.preview-link{
+  display:flex;align-items:center;gap:8px;padding:10px 13px;
+  background:rgba(201,168,76,.08);border:1px solid var(--bc-g);border-radius:9px;
+  color:var(--tg);text-decoration:none;font-size:13px;transition:all .2s;
+}
+.preview-link:hover{background:rgba(201,168,76,.15)}
+
+/* ── TOPBAR ── */
+.topbar{
+  padding:14px 28px;border-bottom:1px solid var(--bc-g);
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg-s);flex-shrink:0;
+}
+.tb-title{font-size:16px;font-weight:600;color:var(--tg)}
+.tb-right{display:flex;gap:10px;align-items:center}
+.btn-g{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:linear-gradient(135deg,var(--gold-d),var(--gold));color:#0A0906;border:none;cursor:pointer;border-radius:8px;font-family:'Vazirmatn',sans-serif;font-size:13px;font-weight:600;transition:opacity .2s,transform .15s}
+.btn-g:hover{opacity:.9;transform:translateY(-1px)}
+.btn-o{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:transparent;color:var(--tg);border:1px solid var(--bc-g);cursor:pointer;border-radius:8px;font-family:'Vazirmatn',sans-serif;font-size:13px;transition:background .2s}
+.btn-o:hover{background:rgba(201,168,76,.1)}
+
+/* ── PANELS ── */
+.panel{display:none;flex-direction:column;flex:1;overflow:hidden}
+.panel.on{display:flex}
+.content{flex:1;overflow-y:auto;padding:24px 28px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bc-g);border-radius:2px}
+
+/* ── DASHBOARD ── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+.stat-card{background:var(--bg-c);border:1px solid var(--bc-c);border-radius:12px;padding:20px;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.04),transparent);pointer-events:none}
+.stat-label{font-size:11px;color:var(--tm);letter-spacing:.5px;margin-bottom:10px}
+.stat-num{font-size:32px;font-weight:700;color:var(--gold-l);line-height:1}
+.stat-icon{position:absolute;top:16px;left:16px;font-size:28px;opacity:.15;color:var(--gold)}
+.stat-sub{font-size:11px;color:var(--tm);margin-top:6px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.dash-box{background:var(--bg-c);border:1px solid var(--bc-c);border-radius:12px;padding:20px}
+.dash-box-title{font-size:13px;font-weight:600;color:var(--tg);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.dash-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bc-c)}
+.dash-row:last-child{border-bottom:none}
+.dash-row-l{display:flex;align-items:center;gap:8px;font-size:13px}
+.dash-row-r{font-size:13px;color:var(--gold-l);font-weight:600}
+.dash-rank{font-size:11px;color:var(--tm);width:18px;text-align:center}
+
+/* ── ITEMS TABLE ── */
+.toolbar{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.s-box{flex:1;min-width:180px;padding:9px 13px;background:var(--bg-c);border:1px solid var(--bc-g);border-radius:8px;color:var(--tx);font-family:'Vazirmatn',sans-serif;font-size:13px;outline:none}
+.s-box::placeholder{color:var(--tm)}
+.s-sel{padding:9px 13px;background:var(--bg-c);border:1px solid var(--bc-g);border-radius:8px;color:var(--tx);font-family:'Vazirmatn',sans-serif;font-size:13px;outline:none;cursor:pointer}
+.tw{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th{text-align:right;padding:10px 14px;font-size:11px;color:var(--tm);letter-spacing:1px;border-bottom:1px solid var(--bc-g);font-weight:500}
+.tbl td{padding:12px 14px;font-size:13px;border-bottom:1px solid var(--bc-c);vertical-align:middle}
+.tbl tr:hover td{background:rgba(201,168,76,.03)}
+.i-thumb{width:40px;height:40px;border-radius:8px;background:linear-gradient(135deg,#1A1208,#2A1E08);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;overflow:hidden}
+.i-thumb img{width:40px;height:40px;object-fit:cover}
+.i-info{display:flex;align-items:center;gap:10px}
+.i-name{font-weight:500;color:var(--tx)}
+.i-desc{font-size:11px;color:var(--tm)}
+.i-cat{font-size:12px;color:var(--tm)}
+.i-price{font-weight:600;color:var(--gold-l)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:4px 12px;border-radius:20px;cursor:pointer;border:none;font-family:'Vazirmatn',sans-serif;transition:all .2s}
+.pill.on{background:var(--gbg);color:var(--gfg);border:1px solid var(--gbd)}
+.pill.off{background:var(--rbg);color:var(--rfg);border:1px solid var(--rbd)}
+.a-btn{padding:5px 10px;border:1px solid var(--bc-g);background:transparent;color:var(--tg);cursor:pointer;border-radius:6px;font-size:12px;font-family:'Vazirmatn',sans-serif;transition:all .2s;margin-right:4px;display:inline-flex;align-items:center;gap:4px}
+.a-btn:hover{background:rgba(201,168,76,.12)}
+.a-btn.del{border-color:var(--rbd);color:var(--rfg)}
+.a-btn.del:hover{background:rgba(240,128,128,.1)}
+
+/* ── CATEGORIES ── */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px}
+.cat-card{background:var(--bg-c);border:1px solid var(--bc-c);border-radius:12px;padding:20px;text-align:center;transition:border-color .2s}
+.cat-card:hover{border-color:var(--bc-g)}
+.cat-card-icon{font-size:36px;margin-bottom:10px}
+.cat-card-name{font-size:14px;font-weight:600;color:var(--tx);margin-bottom:4px}
+.cat-card-count{font-size:12px;color:var(--tm)}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(3px)}
+.overlay.open{display:flex}
+.modal{background:var(--bg-c);border:1px solid var(--bc-g);border-radius:16px;padding:28px;width:520px;max-width:94vw;max-height:92vh;overflow-y:auto}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+.modal-title{font-size:17px;font-weight:600;color:var(--gold-l)}
+.modal-x{background:transparent;border:none;color:var(--tm);cursor:pointer;font-size:20px;line-height:1;transition:color .2s}
+.modal-x:hover{color:var(--tx)}
+.fg{margin-bottom:16px}
+.fl{display:block;font-size:12px;color:var(--tm);margin-bottom:6px;letter-spacing:.5px}
+.fi,.fsel{width:100%;padding:10px 13px;background:var(--bg-s);border:1px solid var(--bc-g);border-radius:8px;color:var(--tx);font-family:'Vazirmatn',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.fi:focus,.fsel:focus{border-color:var(--gold)}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.img-drop{border:2px dashed var(--bc-g);border-radius:10px;padding:24px;text-align:center;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;min-height:100px}
+.img-drop:hover{border-color:var(--gold);background:rgba(201,168,76,.04)}
+.img-drop-txt{font-size:12px;color:var(--tm);margin-top:8px}
+.img-prev{width:100%;height:130px;object-fit:cover;border-radius:7px;display:none}
+.sw-row{display:flex;align-items:center;gap:12px}
+.sw{width:44px;height:24px;background:var(--rbg);border:1px solid var(--rbd);border-radius:12px;position:relative;cursor:pointer;transition:all .25s;flex-shrink:0}
+.sw.on{background:var(--gbg);border-color:var(--gbd)}
+.sw::after{content:'';width:18px;height:18px;background:var(--tm);border-radius:50%;position:absolute;top:2px;right:2px;transition:all .25s}
+.sw.on::after{right:calc(100% - 20px);background:var(--gfg)}
+.modal-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:22px;padding-top:14px;border-top:1px solid var(--bc-c)}
+
+/* ── NOTIF ── */
+.notif{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-70px);background:var(--bg-c);border:1px solid var(--gold);border-radius:10px;padding:11px 22px;font-size:13px;color:var(--gold-l);z-index:9999;transition:transform .3s;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.notif.show{transform:translateX(-50%) translateY(0)}
+.empty{text-align:center;padding:50px 20px;color:var(--tm)}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-icon">🕯️</div>
+    <div>
+      <div class="brand-name">شب‌نشین</div>
+      <span class="brand-role">پنل مدیریت</span>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-group">مدیریت</div>
+    <button class="nav-item on" onclick="go('dash')"><i class="ti ti-layout-dashboard"></i>داشبورد<span class="nav-badge" id="inact-badge">0</span></button>
+    <button class="nav-item" onclick="go('items')"><i class="ti ti-tools-kitchen-2"></i>آیتم‌های منو</button>
+    <button class="nav-item" onclick="go('cats')"><i class="ti ti-category"></i>دسته‌بندی‌ها</button>
+    <div class="nav-group">ابزارها</div>
+    <button class="nav-item" onclick="refreshAll()"><i class="ti ti-refresh"></i>بروزرسانی داده‌ها</button>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="/" target="_blank" class="preview-link">
+      <i class="ti ti-eye"></i> مشاهده منوی مشتری
+      <i class="ti ti-external-link" style="margin-right:auto;font-size:12px"></i>
+    </a>
+  </div>
+</aside>
+
+<!-- ═══ WORKSPACE ═══ -->
+<div class="workspace">
+
+<!-- DASHBOARD -->
+<section id="p-dash" class="panel on">
+  <div class="topbar">
+    <span class="tb-title">داشبورد</span>
+    <div class="tb-right">
+      <span id="last-update" style="font-size:11px;color:var(--tm)"></span>
+      <button class="btn-g" onclick="openModal()"><i class="ti ti-plus"></i>آیتم جدید</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="stat-grid" id="stat-grid"></div>
+    <div class="two-col">
+      <div class="dash-box">
+        <div class="dash-box-title"><i class="ti ti-alert-circle" style="color:var(--rfg)"></i>آیتم‌های غیرفعال</div>
+        <div id="inact-list"></div>
+      </div>
+      <div class="dash-box">
+        <div class="dash-box-title"><i class="ti ti-trending-up" style="color:var(--gold-l)"></i>گران‌ترین آیتم‌ها</div>
+        <div id="top-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ITEMS -->
+<section id="p-items" class="panel">
+  <div class="topbar">
+    <span class="tb-title">آیتم‌های منو</span>
+    <div class="tb-right">
+      <button class="btn-g" onclick="openModal()"><i class="ti ti-plus"></i>افزودن آیتم</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="toolbar">
+      <input class="s-box" id="q" placeholder="جستجو..." oninput="renderTable()">
+      <select class="s-sel" id="cf" onchange="renderTable()"><option value="">همه دسته‌ها</option></select>
+      <select class="s-sel" id="sf" onchange="renderTable()">
+        <option value="">همه وضعیت‌ها</option>
+        <option value="on">فعال</option>
+        <option value="off">غیرفعال</option>
+      </select>
+    </div>
+    <div class="tw">
+      <table class="tbl">
+        <thead><tr>
+          <th>آیتم</th><th>دسته‌بندی</th><th>قیمت (تومان)</th><th>وضعیت</th><th>عملیات</th>
+        </tr></thead>
+        <tbody id="tbl-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section id="p-cats" class="panel">
+  <div class="topbar">
+    <span class="tb-title">دسته‌بندی‌ها</span>
+    <div class="tb-right">
+      <button class="btn-g" onclick="addCat()"><i class="ti ti-plus"></i>دسته جدید</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="cat-grid" id="cat-grid"></div>
+  </div>
+</section>
+
+</div><!-- /workspace -->
+</div><!-- /shell -->
+
+<!-- ═══ MODAL ═══ -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modal-title">افزودن آیتم جدید</div>
+      <button class="modal-x" onclick="closeModal()"><i class="ti ti-x"></i></button>
+    </div>
+
+    <div class="fg">
+      <label class="fl">تصویر غذا</label>
+      <div class="img-drop" id="img-drop">
+        <img class="img-prev" id="img-prev" src="" alt="">
+        <div id="img-drop-inner">
+          <i class="ti ti-photo-up" style="font-size:28px;color:var(--tm)"></i>
+          <div class="img-drop-txt">کلیک برای انتخاب تصویر<br><small>JPG/PNG/WEBP — حداکثر ۵MB</small></div>
+        </div>
+        <input type="file" id="img-file" accept="image/*" style="display:none">
+      </div>
+    </div>
+
+    <div class="f2">
+      <div class="fg"><label class="fl">نام غذا *</label><input class="fi" id="f-name" placeholder="خورشت فسنجان"></div>
+      <div class="fg"><label class="fl">دسته‌بندی</label><select class="fsel" id="f-cat"></select></div>
+    </div>
+    <div class="fg"><label class="fl">توضیحات</label><textarea class="fi" id="f-desc" rows="2" placeholder="توضیح کوتاهی درباره غذا..."></textarea></div>
+    <div class="f2">
+      <div class="fg"><label class="fl">قیمت (تومان) *</label><input class="fi" id="f-price" type="number" placeholder="185000"></div>
+      <div class="fg"><label class="fl">برچسب ویژه</label>
+        <select class="fsel" id="f-badge">
+          <option value="">بدون برچسب</option>
+          <option value="new">🌿 جدید</option>
+          <option value="hot">🔥 پرطرفدار</option>
+          <option value="off">⭐ ویژه</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">وضعیت</label>
+      <div class="sw-row">
+        <div class="sw on" id="f-sw" onclick="toggleSw()"></div>
+        <span id="f-sw-txt" style="font-size:13px">فعال</span>
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn-o" onclick="closeModal()">انصراف</button>
+      <button class="btn-g" id="save-btn" onclick="saveItem()"><i class="ti ti-device-floppy"></i>ذخیره</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTIF -->
+<div class="notif" id="notif"><i class="ti ti-check"></i><span id="notif-txt"></span></div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+const S = { cats:[], items:[], editId:null, active:true, imgUrl:null };
+
+// ── API ────────────────────────────────────────────────────────────────────
+const api = {
+  get: url => fetch(url).then(r => r.json()),
+  post: (url, b) => fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(r=>r.json()),
+  put:  (url, b) => fetch(url,{method:'PUT', headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}).then(r=>r.json()),
+  del:  url => fetch(url,{method:'DELETE'}).then(r=>r.json()),
+  upload: file => { const fd=new FormData(); fd.append('file',file); return fetch('/api/upload',{method:'POST',body:fd}).then(r=>r.json()); }
+};
+
+// ── Helpers ────────────────────────────────────────────────────────────────
+function toast(msg, type='ok') {
+  document.getElementById('notif-txt').textContent = msg;
+  const n = document.getElementById('notif');
+  n.querySelector('i').className = type==='ok' ? 'ti ti-check' : 'ti ti-alert-circle';
+  n.classList.add('show');
+  setTimeout(() => n.classList.remove('show'), 2800);
+}
+function thumb(item) {
+  return item.img && item.img.startsWith('/') ? item.img : null;
+}
+function emoji(item) {
+  return item.img && !item.img.startsWith('/') ? item.img : '🍽';
+}
+function fmtPrice(p) { return Number(p).toLocaleString('fa-IR'); }
+function setLastUpdate() {
+  const t = new Date().toLocaleTimeString('fa-IR');
+  document.getElementById('last-update').textContent = 'آخرین بروزرسانی: ' + t;
+}
+
+// ── Navigation ─────────────────────────────────────────────────────────────
+const PANELS = {dash:'p-dash', items:'p-items', cats:'p-cats'};
+function go(id) {
+  Object.values(PANELS).forEach(p => document.getElementById(p).classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('on'));
+  document.getElementById(PANELS[id]).classList.add('on');
+  const idx = {dash:0, items:1, cats:2}[id];
+  document.querySelectorAll('.nav-item')[idx]?.classList.add('on');
+  ({dash: renderDash, items: renderTable, cats: renderCats})[id]();
+}
+
+// ── Dashboard ──────────────────────────────────────────────────────────────
+function renderDash() {
+  const inact = S.items.filter(i => !i.active);
+  document.getElementById('stat-grid').innerHTML = [
+    {n: S.items.length,               l:'کل آیتم‌ها',  i:'ti-tools-kitchen-2'},
+    {n: S.items.filter(i=>i.active).length, l:'فعال',  i:'ti-check'},
+    {n: inact.length,                 l:'غیرفعال',      i:'ti-x'},
+    {n: S.cats.length,                l:'دسته‌بندی',    i:'ti-category'},
+  ].map(s=>`
+    <div class="stat-card">
+      <div class="stat-label">${s.l}</div>
+      <div class="stat-num">${s.n}</div>
+      <div class="stat-icon"><i class="ti ${s.i}"></i></div>
+    </div>`).join('');
+
+  document.getElementById('inact-list').innerHTML = inact.length
+    ? inact.map(i=>`
+        <div class="dash-row">
+          <div class="dash-row-l">
+            ${thumb(i) ? `<img src="${thumb(i)}" style="width:28px;height:28px;border-radius:6px;object-fit:cover">` : `<span>${emoji(i)}</span>`}
+            <span>${i.name}</span>
+          </div>
+          <button class="a-btn" style="font-size:11px" onclick="quickOn(${i.id})">فعال‌سازی</button>
+        </div>`).join('')
+    : '<div class="empty" style="padding:20px;font-size:13px">همه فعال هستند ✓</div>';
+
+  const top = [...S.items].sort((a,b)=>b.price-a.price).slice(0,5);
+  const pn = ['۱','۲','۳','۴','۵'];
+  document.getElementById('top-list').innerHTML = top.map((i,x)=>`
+    <div class="dash-row">
+      <div class="dash-row-l">
+        <span class="dash-rank">${pn[x]}</span>
+        ${thumb(i) ? `<img src="${thumb(i)}" style="width:28px;height:28px;border-radius:6px;object-fit:cover">` : `<span>${emoji(i)}</span>`}
+        <span>${i.name}</span>
+      </div>
+      <span class="dash-row-r">${fmtPrice(i.price)}</span>
+    </div>`).join('');
+
+  document.getElementById('inact-badge').textContent = inact.length;
+}
+
+// ── Items Table ────────────────────────────────────────────────────────────
+function renderTable() {
+  const cf = document.getElementById('cf');
+  const prev = cf.value;
+  cf.innerHTML = '<option value="">همه دسته‌ها</option>' +
+    S.cats.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+  cf.value = prev;
+
+  const q   = (document.getElementById('q').value||'').toLowerCase();
+  const cat = cf.value;
+  const st  = document.getElementById('sf').value;
+  const rows = S.items.filter(i => {
+    if (q  && !i.name.toLowerCase().includes(q) && !(i.desc||'').toLowerCase().includes(q)) return false;
+    if (cat && i.cat !== cat)   return false;
+    if (st==='on'  && !i.active) return false;
+    if (st==='off' &&  i.active) return false;
+    return true;
+  });
+
+  const body = document.getElementById('tbl-body');
+  if (!rows.length) {
+    body.innerHTML = `<tr><td colspan="5" class="empty"><i class="ti ti-search" style="font-size:30px;display:block;margin-bottom:8px"></i>نتیجه‌ای یافت نشد</td></tr>`;
+    return;
+  }
+  body.innerHTML = rows.map(item => {
+    const cat = S.cats.find(c=>c.id===item.cat) || {name:item.cat, icon:'🍽'};
+    const th  = thumb(item)
+      ? `<img src="${thumb(item)}" alt="">` : emoji(item);
+    return `<tr>
+      <td><div class="i-info">
+        <div class="i-thumb">${th}</div>
+        <div><div class="i-name">${item.name}</div>
+          <div class="i-desc">${(item.desc||'').substring(0,32)}…</div></div>
+      </div></td>
+      <td class="i-cat">${cat.icon} ${cat.name}</td>
+      <td class="i-price">${fmtPrice(item.price)}</td>
+      <td><button class="pill ${item.active?'on':'off'}" onclick="toggleItem(${item.id})">
+        <i class="ti ${item.active?'ti-check':'ti-x'}" style="font-size:11px"></i>
+        ${item.active?'فعال':'غیرفعال'}</button></td>
+      <td>
+        <button class="a-btn" onclick="openModal(${item.id})"><i class="ti ti-edit"></i>ویرایش</button>
+        <button class="a-btn del" onclick="delItem(${item.id})"><i class="ti ti-trash"></i>حذف</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Categories ─────────────────────────────────────────────────────────────
+function renderCats() {
+  document.getElementById('cat-grid').innerHTML = S.cats.map(c => `
+    <div class="cat-card">
+      <div class="cat-card-icon">${c.icon}</div>
+      <div class="cat-card-name">${c.name}</div>
+      <div class="cat-card-count">${S.items.filter(i=>i.cat===c.id).length} آیتم</div>
+    </div>`).join('');
+}
+async function addCat() {
+  const name = prompt('نام دسته‌بندی جدید:'); if(!name?.trim()) return;
+  const icon = prompt('آیکون (ایموجی):', '🍽') || '🍽';
+  const r = await api.post('/api/categories', {name:name.trim(), icon});
+  if (r.error) { toast(r.error,'err'); return; }
+  S.cats.push(r); renderCats();
+  toast('دسته "' + r.name + '" افزوده شد');
+}
+
+// ── CRUD ───────────────────────────────────────────────────────────────────
+async function toggleItem(id) {
+  const r = await api.post(`/api/items/${id}/toggle`, {});
+  const idx = S.items.findIndex(i=>i.id===id); if(idx!==-1) S.items[idx]=r;
+  renderTable(); renderDash();
+  toast(r.name + ' ' + (r.active ? 'فعال' : 'غیرفعال') + ' شد');
+}
+async function quickOn(id) {
+  const r = await api.put(`/api/items/${id}`, {active:true});
+  const idx = S.items.findIndex(i=>i.id===id); if(idx!==-1) S.items[idx]=r;
+  renderDash();
+  toast(r.name + ' فعال شد');
+}
+async function delItem(id) {
+  const item = S.items.find(i=>i.id===id);
+  if (!confirm(`حذف "${item?.name}"?`)) return;
+  await api.del(`/api/items/${id}`);
+  S.items = S.items.filter(i=>i.id!==id);
+  renderTable(); renderDash();
+  toast('آیتم حذف شد');
+}
+
+// ── Modal ──────────────────────────────────────────────────────────────────
+function openModal(id=null) {
+  S.editId=null; S.active=true; S.imgUrl=null;
+  ['f-name','f-desc','f-price'].forEach(f=>document.getElementById(f).value='');
+  document.getElementById('f-badge').value = '';
+  const ip = document.getElementById('img-prev');
+  ip.style.display='none'; ip.src='';
+  document.getElementById('img-drop-inner').style.display='block';
+  document.getElementById('img-file').value='';
+  document.getElementById('f-cat').innerHTML =
+    S.cats.map(c=>`<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+  setSw(true);
+
+  if (id) {
+    const item = S.items.find(i=>i.id===id); if(!item) return;
+    S.editId = id;
+    document.getElementById('modal-title').textContent = 'ویرایش آیتم';
+    document.getElementById('f-name').value  = item.name;
+    document.getElementById('f-desc').value  = item.desc||'';
+    document.getElementById('f-price').value = item.price;
+    document.getElementById('f-badge').value = item.badge||'';
+    document.getElementById('f-cat').value   = item.cat;
+    setSw(item.active);
+    if (thumb(item)) {
+      S.imgUrl=item.img; ip.src=item.img; ip.style.display='block';
+      document.getElementById('img-drop-inner').style.display='none';
+    }
+  } else {
+    document.getElementById('modal-title').textContent = 'افزودن آیتم جدید';
+  }
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+function setSw(on) {
+  S.active=on;
+  document.getElementById('f-sw').classList.toggle('on',on);
+  document.getElementById('f-sw-txt').textContent = on ? 'فعال' : 'غیرفعال';
+}
+function toggleSw() { setSw(!S.active); }
+
+async function saveItem() {
+  const btn = document.getElementById('save-btn');
+  const name  = document.getElementById('f-name').value.trim();
+  const price = parseInt(document.getElementById('f-price').value)||0;
+  if (!name||!price) { toast('نام و قیمت الزامی است','err'); return; }
+  btn.disabled=true; btn.textContent='در حال ذخیره...';
+  const payload = {
+    name, price,
+    desc:  document.getElementById('f-desc').value.trim(),
+    cat:   document.getElementById('f-cat').value,
+    badge: document.getElementById('f-badge').value,
+    active: S.active,
+    img: S.imgUrl || (S.editId ? S.items.find(i=>i.id===S.editId)?.img : '🍽') || '🍽',
+  };
+  try {
+    let saved;
+    if (S.editId) {
+      saved = await api.put(`/api/items/${S.editId}`, payload);
+      S.items[S.items.findIndex(i=>i.id===S.editId)] = saved;
+      toast('آیتم ویرایش شد');
+    } else {
+      saved = await api.post('/api/items', payload);
+      S.items.push(saved);
+      toast('آیتم جدید افزوده شد');
+    }
+    closeModal(); renderTable(); renderDash();
+  } catch(e) { toast('خطا در ذخیره‌سازی','err'); }
+  finally { btn.disabled=false; btn.innerHTML='<i class="ti ti-device-floppy"></i>ذخیره'; }
+}
+
+// ── Image upload ───────────────────────────────────────────────────────────
+document.getElementById('img-drop').addEventListener('click', () =>
+  document.getElementById('img-file').click());
+
+document.getElementById('img-file').addEventListener('change', async function() {
+  const file = this.files[0]; if(!file) return;
+  const r = await api.upload(file);
+  if (r.url) {
+    S.imgUrl = r.url;
+    const ip = document.getElementById('img-prev');
+    ip.src=r.url; ip.style.display='block';
+    document.getElementById('img-drop-inner').style.display='none';
+    toast('تصویر بارگذاری شد');
+  } else toast(r.error||'خطا در بارگذاری تصویر','err');
+});
+
+// ── Drag & drop on image zone ───────────────────────────────────────────────
+const dropZone = document.getElementById('img-drop');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor='var(--gold)'; });
+dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor=''; });
+dropZone.addEventListener('drop', async e => {
+  e.preventDefault(); dropZone.style.borderColor='';
+  const file = e.dataTransfer.files[0]; if(!file) return;
+  const r = await api.upload(file);
+  if (r.url) {
+    S.imgUrl=r.url;
+    const ip=document.getElementById('img-prev'); ip.src=r.url; ip.style.display='block';
+    document.getElementById('img-drop-inner').style.display='none';
+    toast('تصویر بارگذاری شد');
+  }
+});
+
+// ── Refresh ────────────────────────────────────────────────────────────────
+async function refreshAll() {
+  const [cats, items] = await Promise.all([
+    api.get('/api/categories'),
+    api.get('/api/items'),
+  ]);
+  S.cats=cats; S.items=items;
+  renderDash(); setLastUpdate();
+  toast('داده‌ها بروزرسانی شد');
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+async function init() {
+  const [cats, items] = await Promise.all([
+    api.get('/api/categories'),
+    api.get('/api/items'),
+  ]);
+  S.cats=cats; S.items=items;
+  renderDash(); setLastUpdate();
+}
+init();
+</script>
+</body>
+</html>

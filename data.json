@@ -1,0 +1,236 @@
+{
+  "categories": [
+    {
+      "id": "appetizer",
+      "name": "پیش‌غذا و سوپ",
+      "icon": "🥣"
+    },
+    {
+      "id": "main",
+      "name": "غذای اصلی",
+      "icon": "🍲"
+    },
+    {
+      "id": "rice",
+      "name": "پلوها",
+      "icon": "🍚"
+    },
+    {
+      "id": "kebab",
+      "name": "کباب و گریل",
+      "icon": "🔥"
+    },
+    {
+      "id": "drink",
+      "name": "نوشیدنی",
+      "icon": "☕"
+    },
+    {
+      "id": "dessert",
+      "name": "دسر",
+      "icon": "🍮"
+    }
+  ],
+  "items": [
+    {
+      "id": 1,
+      "name": "آش رشته سبزی",
+      "cat": "appetizer",
+      "desc": "آش سنتی با حبوبات و سبزیجات تازه",
+      "price": 85000,
+      "badge": "hot",
+      "active": true,
+      "img": "/uploads/774b4799f8c34fc8a9a266ff00c52260.jpg"
+    },
+    {
+      "id": 2,
+      "name": "سوپ جو",
+      "cat": "appetizer",
+      "desc": "سوپ گرم با جو مروارید و سبزیجات",
+      "price": 75000,
+      "badge": "",
+      "active": true,
+      "img": "🍲"
+    },
+    {
+      "id": 3,
+      "name": "میرزاقاسمی",
+      "cat": "appetizer",
+      "desc": "کباب بادمجان با تخم‌مرغ و گوجه‌فرنگی",
+      "price": 95000,
+      "badge": "new",
+      "active": true,
+      "img": "🍆"
+    },
+    {
+      "id": 4,
+      "name": "خورشت فسنجان",
+      "cat": "main",
+      "desc": "خورشت گردو و انار با مرغ محلی",
+      "price": 185000,
+      "badge": "hot",
+      "active": true,
+      "img": "🍗"
+    },
+    {
+      "id": 5,
+      "name": "قرمه‌سبزی",
+      "cat": "main",
+      "desc": "خورشت معروف با سبزی تازه و لوبیا",
+      "price": 175000,
+      "badge": "",
+      "active": true,
+      "img": "🌿"
+    },
+    {
+      "id": 6,
+      "name": "قیمه",
+      "cat": "main",
+      "desc": "خورشت لپه با گوشت و لیمو عمانی",
+      "price": 165000,
+      "badge": "",
+      "active": true,
+      "img": "🍖"
+    },
+    {
+      "id": 7,
+      "name": "کوفته تبریزی",
+      "cat": "main",
+      "desc": "کوفته بزرگ با آلو و گردو",
+      "price": 195000,
+      "badge": "new",
+      "active": true,
+      "img": "🥩"
+    },
+    {
+      "id": 8,
+      "name": "دلمه",
+      "cat": "main",
+      "desc": "دلمه برگ مو با برنج و گوشت",
+      "price": 155000,
+      "badge": "",
+      "active": false,
+      "img": "🫑"
+    },
+    {
+      "id": 9,
+      "name": "چلو",
+      "cat": "rice",
+      "desc": "برنج ایرانی با کره و زعفران",
+      "price": 55000,
+      "badge": "",
+      "active": true,
+      "img": "🍚"
+    },
+    {
+      "id": 10,
+      "name": "باقالی‌پلو",
+      "cat": "rice",
+      "desc": "پلو با باقالی و شوید تازه",
+      "price": 75000,
+      "badge": "",
+      "active": true,
+      "img": "🫘"
+    },
+    {
+      "id": 11,
+      "name": "کلم‌پلو",
+      "cat": "rice",
+      "desc": "پلو با کلم و گوشت سنتی",
+      "price": 145000,
+      "badge": "",
+      "active": true,
+      "img": "🥗"
+    },
+    {
+      "id": 12,
+      "name": "کباب کوبیده",
+      "cat": "kebab",
+      "desc": "کباب گوشت چرخ‌کرده با ادویه مخصوص",
+      "price": 245000,
+      "badge": "hot",
+      "active": true,
+      "img": "🍢"
+    },
+    {
+      "id": 13,
+      "name": "جوجه‌کباب",
+      "cat": "kebab",
+      "desc": "مرغ مزه‌دار شده با زعفران",
+      "price": 225000,
+      "badge": "",
+      "active": true,
+      "img": "🍗"
+    },
+    {
+      "id": 14,
+      "name": "برگ",
+      "cat": "kebab",
+      "desc": "کباب برگ گوشت تازه",
+      "price": 285000,
+      "badge": "off",
+      "active": true,
+      "img": "🥩"
+    },
+    {
+      "id": 15,
+      "name": "دوغ سنتی",
+      "cat": "drink",
+      "desc": "دوغ محلی با نعنا",
+      "price": 35000,
+      "badge": "",
+      "active": true,
+      "img": "🥛"
+    },
+    {
+      "id": 16,
+      "name": "چای سنتی",
+      "cat": "drink",
+      "desc": "چای ایرانی با زعفران",
+      "price": 25000,
+      "badge": "",
+      "active": true,
+      "img": "☕"
+    },
+    {
+      "id": 17,
+      "name": "شربت آلبالو",
+      "cat": "drink",
+      "desc": "شربت سنتی با آلبالوی تازه",
+      "price": 45000,
+      "badge": "new",
+      "active": true,
+      "img": "🍒"
+    },
+    {
+      "id": 18,
+      "name": "زولبیا بامیه",
+      "cat": "dessert",
+      "desc": "شیرینی سنتی ماه رمضان",
+      "price": 55000,
+      "badge": "off",
+      "active": false,
+      "img": "🍩"
+    },
+    {
+      "id": 19,
+      "name": "بستنی سنتی",
+      "cat": "dessert",
+      "desc": "بستنی زعفرانی با گلاب",
+      "price": 65000,
+      "badge": "",
+      "active": true,
+      "img": "🍨"
+    },
+    {
+      "id": 20,
+      "name": "حلوا",
+      "cat": "dessert",
+      "desc": "حلوا ارده با کنجد",
+      "price": 45000,
+      "badge": "",
+      "active": true,
+      "img": "🟤"
+    }
+  ]
+}
